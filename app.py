@@ -16,7 +16,7 @@ def start():
     print("Incoming payload:", to_predict)
 
     try:
-        mpg = predict(to_predict)  # delegate to prediction.py
+        mpg = predict(to_predict)  # train_model.py
     except Exception as err:
         return jsonify({"error": str(err)}), 400
 
