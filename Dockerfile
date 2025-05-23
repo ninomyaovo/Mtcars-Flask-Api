@@ -16,4 +16,4 @@ FROM base
 COPY --from=build /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
 COPY --from=build /app /app
 EXPOSE 5050
-CMD ["python","server.py"]
+CMD ["python","app.py"]
