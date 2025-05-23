@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from flask import Flask, jsonify, request
-from prediction import predict  # your custom business logic
+from prediction import predict
 
 app = Flask(__name__)
 
