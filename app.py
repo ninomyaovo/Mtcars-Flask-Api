@@ -7,9 +7,8 @@ app = Flask(__name__)
 
 @app.route("/", methods=["GET"])
 def server_is_up():
-    return "Server is up – Mtcars Flask API running!
+    return "Server is up – Mtcars Flask API running!\n\n"
 
-"
 
 @app.route("/predict_mpg", methods=["POST"])
 def start():
