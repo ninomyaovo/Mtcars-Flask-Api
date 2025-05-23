@@ -1,30 +1,27 @@
-import joblib, json, os
-from pathlib import Path
-from flask import Flask, request, jsonify
+#!/usr/bin/env python3
 
-MODEL = joblib.load(Path(__file__).resolve().parents[1] / "model.pkl")
-NUM_FEATURES = MODEL.n_features_in_  # 10 for mtcars
+from flask import Flask, jsonify, request
+from prediction import predict  # your custom business logic
 
 app = Flask(__name__)
 
-@app.route("/health", methods=["GET"])
-def health():
-    return "ok", 200
+@app.route("/", methods=["GET"])
+def server_is_up():
+    return "Server is up – Mtcars Flask API running!
 
-@app.route("/predict", methods=["POST"])
-def predict():
-    data = request.get_json()
-    if not data:
-        return jsonify({"error": "JSON body required"}), 400
+"
+
+@app.route("/predict_mpg", methods=["POST"])
+def start():
+    to_predict = request.json  # raw dict from JSON body
+    print("Incoming payload:", to_predict)
+
     try:
-        X = [[data[k] for k in sorted(data.keys())]]
-        if len(X[0]) != NUM_FEATURES:
-            raise ValueError("Wrong number of features")
-        mpg = MODEL.predict(X)[0]
-        return jsonify({"mpg": round(float(mpg), 2)})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 400
+        mpg = predict(to_predict)  # delegate to prediction.py
+    except Exception as err:
+        return jsonify({"error": str(err)}), 400
+
+    return jsonify({"predicted_mpg": mpg})
 
 if __name__ == "__main__":
-    port = int(os.getenv("PORT", 8080))
-    app.run(host="0.0.0.0", port=port)
+    app.run(debug=True, host="0.0.0.0", port=5050)
