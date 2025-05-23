@@ -1,0 +1,13 @@
+version: "3.9"  # latest stable
+
+services:
+  api:
+    build: .                # uses the Dockerfile in repo root
+    image: mtcars-flask-api # local tag; can also be your_dockerhub/mtcars-flask-api
+    ports:
+      - "5050:5050"        # host:container
+    environment:
+      - PYTHONUNBUFFERED=1  # handy for live logs
+    # optional: rebuild automatically on code change (dev only)
+    volumes:
+      - .:/app              # live‑mount code into container
